@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kur Bilgileri</title>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+    <script>
+        $(function() {
+            $("#datepicker").datepicker({
+                dateFormat: "yy-mm-dd"
+            });
+        });
+
+        function getExchangeRates() {
+            var selectedDate = $("#datepicker").val();
+            $.ajax({
+                url: "KurBilgileri.php",
+                method: "POST",
+                data: { selected_date: selectedDate },
+                success: function(data) {
+                    $("#kur_bilgileri").html(data);
+                },
+                error: function() {
+                    $("#kur_bilgileri").html("Veri alınırken bir hata oluştu.");
+                }
+            });
+        }
+    </script>
+</head>
+<body>
+
+<h2>Kur Bilgileri</h2>
+<form>
+    <label for="datepicker">Tarih Seçin:</label>
+    <input type="text" id="datepicker" name="selected_date">
+    <input type="button" value="Kur Bilgilerini Getir" onclick="getExchangeRates()">
+</form>
+
+<div id="kur_bilgileri"></div>
+
+</body>
+</html>
